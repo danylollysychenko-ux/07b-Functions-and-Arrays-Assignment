@@ -4,20 +4,21 @@ const resetBtn = document.getElementById("resetBtn");
 const whoseturn = document.getElementById("whose-turn");
 let computerWin = false;
 let playerWin = false;
-let playerTurn = false;
-let computerTurn = false;
+let playerTurn = true;
 
 for (s of spaces) {
   s.addEventListener("click", handleSpaceClick);
 }
 
 resetBtn.addEventListener("click", resetBoard);
-
+displayTurn();
 function handleSpaceClick() {
-  playerTurn = true;
+  if (!playerTurn) return;
   this.innerHTML = "x";
   conditions();
   playerTurn = false;
+  //make sure there's spaces left and game is not won
+  computer();
 }
 
 function resetBoard() {
@@ -40,7 +41,6 @@ function conditions() {
       spaces[8].textContent == "x")
   ) {
     message.innerHTML = "You win!";
-    playerWin = true;
   } else if (
     (spaces[0].textContent == "x" &&
       spaces[4].textContent == "x" &&
@@ -50,7 +50,6 @@ function conditions() {
       spaces[6].textContent == "x")
   ) {
     message.innerHTML = "You win!";
-    playerWin = true;
   } else if (
     (spaces[0].textContent == "x" &&
       spaces[3].textContent == "x" &&
@@ -63,35 +62,36 @@ function conditions() {
       spaces[8].textContent == "x")
   ) {
     message.innerHTML = "You win!";
-    playerWin = true;
   }
+  return true;
 }
 
-function displayTurn(playerTurn, computerTurn) {
-  if ((playerTurn = false)) {
+function displayTurn() {
+  if (!playerTurn) {
     whoseturn.innerHTML = "Computer's turn";
-  } else if ((computerTurn = false)) {
+  } else {
     whoseturn.innerHTML = "Player's turn";
   }
 }
 
-function computer(spaces) {
-  displayTurn(playerTurn, computerTurn);
-  playerTurn = true;
-  if (!playerTurn) {
-    playerTurn = false;
-  }
-  if (!playerTurn) {
-    setTimeout((computer) => {
-      spaces;
-    }, 1000);
-    let randomNum = Math.floor(Math.random() * 9);
-    spaces[randomNum].innerHTML = "o";
+function checkForSpaces() {
+  for (ch of spaces) {
+    if (ch.innerHTML !== "x") {
+      setTimeout(() => {
+        let randomNum = Math.floor(Math.random() * 9);
+        spaces[randomNum].innerHTML = "o";
+        playerTurn = true;
+      }, 1000);
+    } else {
+      let randomNum = Math.floor(Math.random() * 9);
+    }
   }
 }
 
-handleSpaceClick();
-computer(spaces);
+function computer() {
+  displayTurn();
+  checkForSpaces();
+}
 
 //Based on this starter code, write Tic Tac Toe
 //Use at least 5 functions (check for win, tie, show win screen, show tie screen, reset, update turn
