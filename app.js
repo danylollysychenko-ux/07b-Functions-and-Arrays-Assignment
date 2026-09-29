@@ -5,6 +5,7 @@ const whoseturn = document.getElementById("whose-turn");
 let computerWin = false;
 let playerWin = false;
 let playerTurn = true;
+let computerTurn = false;
 
 for (s of spaces) {
   s.addEventListener("click", handleSpaceClick);
@@ -15,10 +16,17 @@ displayTurn();
 function handleSpaceClick() {
   if (!playerTurn) return;
   this.innerHTML = "x";
-  conditions();
+  if (conditions("x")){
+    message.innerHTML = "Player wins!"
+  }
+  
   playerTurn = false;
   //make sure there's spaces left and game is not won
   computer();
+  computerTurn = true;
+  if (conditions("o")){
+    message.innerHTML = "Computer wins"
+  }
 }
 
 function resetBoard() {
@@ -28,42 +36,42 @@ function resetBoard() {
   message.innerHTML = "";
 }
 
-function conditions() {
+function conditions(symbol) {
   if (
-    (spaces[0].textContent == "x" &&
-      spaces[1].textContent == "x" &&
-      spaces[2].textContent == "x") ||
-    (spaces[3].textContent == "x" &&
-      spaces[4].textContent == "x" &&
-      spaces[5].textContent == "x") ||
-    (spaces[6].textContent == "x" &&
-      spaces[7].textContent == "x" &&
-      spaces[8].textContent == "x")
+    (spaces[0].textContent == symbol &&
+      spaces[1].textContent == symbol &&
+      spaces[2].textContent == symbol) ||
+    (spaces[3].textContent == symbol &&
+      spaces[4].textContent == symbol &&
+      spaces[5].textContent == symbol) ||
+    (spaces[6].textContent == symbol &&
+      spaces[7].textContent == symbol &&
+      spaces[8].textContent == symbol)
   ) {
-    message.innerHTML = "You win!";
+    // message.innerHTML = "You win!";
   } else if (
-    (spaces[0].textContent == "x" &&
-      spaces[4].textContent == "x" &&
-      spaces[8].textContent == "x") ||
-    (spaces[2].textContent == "x" &&
-      spaces[4].textContent == "x" &&
-      spaces[6].textContent == "x")
+    (spaces[0].textContent == symbol &&
+      spaces[4].textContent == symbol &&
+      spaces[8].textContent == symbol) ||
+    (spaces[2].textContent == symbol &&
+      spaces[4].textContent == symbol &&
+      spaces[6].textContent == symbol)
   ) {
-    message.innerHTML = "You win!";
+    // message.innerHTML = "You win!";
   } else if (
-    (spaces[0].textContent == "x" &&
-      spaces[3].textContent == "x" &&
-      spaces[6].textContent == "x") ||
-    (spaces[1].textContent == "x" &&
-      spaces[4].textContent == "x" &&
-      spaces[7].textContent == "x") ||
-    (spaces[2].textContent == "x" &&
-      spaces[5].textContent == "x" &&
-      spaces[8].textContent == "x")
+    (spaces[0].textContent == symbol &&
+      spaces[3].textContent == symbol &&
+      spaces[6].textContent == symbol) ||
+    (spaces[1].textContent == symbol &&
+      spaces[4].textContent == symbol &&
+      spaces[7].textContent == symbol) ||
+    (spaces[2].textContent == symbol &&
+      spaces[5].textContent == symbol &&
+      spaces[8].textContent == symbol)
   ) {
-    message.innerHTML = "You win!";
+    // message.innerHTML = "You win!";
   }
-  return true;
+  return;
 }
 
 function displayTurn() {
@@ -79,13 +87,13 @@ function checkForSpaces() {
     if (ch.innerHTML !== "x") {
       setTimeout(() => {
         let randomNum = Math.floor(Math.random() * 9);
-        spaces[randomNum].innerHTML = "o";
-        playerTurn = true;
       }, 1000);
     } else {
       let randomNum = Math.floor(Math.random() * 9);
+      spaces[randomNum].innerHTML = "o";
     }
   }
+  playerTurn = true;
 }
 
 function computer() {
